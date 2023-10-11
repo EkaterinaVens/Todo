@@ -33,10 +33,7 @@ export default class App extends React.Component {
 
   deleteItem = (id) => {
     this.setState(({ tasks }) => {
-      const idx = tasks.findIndex((el) => el.id === id)
-
-      const newArray = [...tasks.slice(0, idx), ...tasks.slice(idx + 1)]
-
+      const newArray = tasks.filter((el) => el.id !== id)
       return {
         tasks: newArray,
       }
@@ -44,6 +41,7 @@ export default class App extends React.Component {
   }
 
   onToggleDone = (id) => {
+    //map
     this.setState(({ tasks }) => {
       const idx = tasks.findIndex((el) => el.id === id)
 
@@ -88,6 +86,7 @@ export default class App extends React.Component {
   }
 
   onEditTask = (id) => {
+    //map
     this.setState(({ tasks }) => {
       const idx = tasks.findIndex((el) => el.id === id)
       const oldItem = tasks[idx]
