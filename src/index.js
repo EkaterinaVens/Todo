@@ -12,14 +12,7 @@ export default class App extends React.Component {
   maxId = 10
 
   state = {
-    tasks: [
-      // {name: 'сделать кофе', id: 1, done: false, isEdit: false},
-      // {name: 'покурить кальян', id: 2, done: false, isEdit: false},
-      // {name: 'сдать всё до дедлайна', id: 3, done: false ,isEdit: false},
-      // {name: 'правка чекбокса', id: 4, done: false, isEdit: false},
-      // {name: 'актуальное время', id: 5, done: false, isEdit: false},
-      // {name: 'редактирование', id: 6, done: false, isEdit: false}
-    ], // [{}]
+    tasks: [],
     filter: 'active',
   }
 
