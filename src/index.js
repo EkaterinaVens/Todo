@@ -33,7 +33,7 @@ export default class App extends React.Component {
 
   deleteItem = (id) => {
     this.setState(({ tasks }) => {
-      const newArray = tasks.filter((el) => el.id !== id)
+      const newArray = tasks.filter((task) => task.id !== id)
       return {
         tasks: newArray,
       }
@@ -43,13 +43,21 @@ export default class App extends React.Component {
   onToggleDone = (id) => {
     //map
     this.setState(({ tasks }) => {
-      const idx = tasks.findIndex((el) => el.id === id)
+      // const idx = tasks.findIndex((el) => el.id === id)
 
-      const oldItem = tasks[idx]
-      const newItem = { ...oldItem, done: !oldItem.done }
+      // const oldItem = tasks[idx]
+      // const newItem = { ...oldItem, done: !oldItem.done }
 
-      const newArray = [...tasks.slice(0, idx), newItem, ...tasks.slice(idx + 1)]
-
+      // const newArray = [...tasks.slice(0, idx), newItem, ...tasks.slice(idx + 1)]
+      const newArray = tasks.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            done: !task.done,
+          }
+        }
+        return task
+      })
       return {
         tasks: newArray,
       }
