@@ -41,14 +41,7 @@ export default class App extends React.Component {
   }
 
   onToggleDone = (id) => {
-    //map
     this.setState(({ tasks }) => {
-      // const idx = tasks.findIndex((el) => el.id === id)
-
-      // const oldItem = tasks[idx]
-      // const newItem = { ...oldItem, done: !oldItem.done }
-
-      // const newArray = [...tasks.slice(0, idx), newItem, ...tasks.slice(idx + 1)]
       const newArray = tasks.map((task) => {
         if (task.id === id) {
           return {
@@ -94,14 +87,16 @@ export default class App extends React.Component {
   }
 
   onEditTask = (id) => {
-    //map
     this.setState(({ tasks }) => {
-      const idx = tasks.findIndex((el) => el.id === id)
-      const oldItem = tasks[idx]
-
-      const newItem = { ...oldItem, isEdit: !oldItem.isEdit }
-
-      const newArray = [...tasks.slice(0, idx), newItem, ...tasks.slice(idx + 1)]
+      const newArray = tasks.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            isEdit: !task.isEdit,
+          }
+        }
+        return task
+      })
 
       return {
         tasks: newArray,
