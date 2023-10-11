@@ -1,23 +1,20 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
+// eslint-disable-next-line no-unused-vars
+import React from 'react'
 import TasksFilter from '../tasks-filter'
 
 import './index.css'
 
-export default class Footer extends React.Component {
-  render() {
-    const { doneCount, onChangeFilter, onClearCompleted, currentFilter } = this.props
-    return (
-      <footer className="footer">
-        <span className="todo-count">{doneCount} items left</span>
-        <TasksFilter onChangeFilter={onChangeFilter} currentFilter={currentFilter} />
-        <button className="clear-completed" onClick={onClearCompleted}>
-          Clear completed
-        </button>
-      </footer>
-    )
-  }
+const Footer = ({ doneCount, onChangeFilter, onClearCompleted, currentFilter }) => {
+  return (
+    <footer className="footer">
+      <span className="todo-count">{doneCount} items left</span>
+      <TasksFilter onChangeFilter={onChangeFilter} currentFilter={currentFilter} />
+      <button className="clear-completed" onClick={onClearCompleted}>
+        Clear completed
+      </button>
+    </footer>
+  )
 }
 
 Footer.propTypes = {
@@ -26,3 +23,5 @@ Footer.propTypes = {
   onChangeFilter: PropTypes.func.isRequired,
   currentFilter: PropTypes.string,
 }
+
+export default Footer
