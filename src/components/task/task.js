@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 export default class Task extends React.Component {
   render() {
-    const { text, onDeleted, onToggleDone, done, onEditTask, isEdit, newTextEditTask, date } = this.props
+    const { name, onDeleted, onToggleDone, done, onEditTask, isEdit, newTextEditTask, date } = this.props
     let classNames = ''
 
     switch (true) {
@@ -32,7 +32,7 @@ export default class Task extends React.Component {
             />
 
             <label>
-              <span className="description">{text}</span>
+              <span className="description">{name}</span>
               <span className="created">
                 created {formatDistanceToNow(date, { includeSeconds: true, addSuffix: true })}
               </span>
@@ -47,7 +47,7 @@ export default class Task extends React.Component {
               newTextEditTask(e.target.editTask.value)
             }}
           >
-            <input name="editTask" type="text" className="edit" contentEditable="true" defaultValue={text} />
+            <input name="editTask" type="text" className="edit" contentEditable="true" defaultValue={name} />
           </form>
         )}
       </li>
@@ -64,7 +64,7 @@ Task.propTypes = {
   isEdit: PropTypes.bool,
   onDeleted: PropTypes.func.isRequired,
   onEditTask: PropTypes.func.isRequired,
-  text: PropTypes.string,
+  name: PropTypes.string,
   date: PropTypes.object,
   onToggleDone: PropTypes.func,
   newTextEditTask: PropTypes.func,

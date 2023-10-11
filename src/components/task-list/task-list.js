@@ -1,31 +1,25 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import PropTypes from 'prop-types'
 import Task from '../task'
 
-export default class TaskList extends React.Component {
-  render() {
-    const { tasks, onDeleted, onToggleDone, onEditTask, newTextEditTask } = this.props
-
-    return (
-      <ul className="todo-list">
-        {tasks.map((task) => (
-          <Task
-            key={task.id}
-            text={task.name}
-            onDeleted={() => onDeleted(task.id)}
-            onToggleDone={() => onToggleDone(task.id)}
-            done={task.done}
-            onEditTask={() => onEditTask(task.id)}
-            isEdit={task.isEdit}
-            newTextEditTask={(newTaskName) => {
-              newTextEditTask(task.id, newTaskName)
-            }}
-            date={task.date}
-          />
-        ))}
-      </ul>
-    )
-  }
+const TaskList = ({ tasks, onDeleted, onToggleDone, onEditTask, newTextEditTask }) => {
+  return (
+    <ul className="todo-list">
+      {tasks.map((task) => (
+        <Task
+          key={task.id}
+          {...task}
+          onDeleted={() => onDeleted(task.id)}
+          onToggleDone={() => onToggleDone(task.id)}
+          onEditTask={() => onEditTask(task.id)}
+          newTextEditTask={(newTaskName) => {
+            newTextEditTask(task.id, newTaskName)
+          }}
+        />
+      ))}
+    </ul>
+  )
 }
 TaskList.propTypes = {
   tasks: PropTypes.array,
@@ -34,3 +28,5 @@ TaskList.propTypes = {
   onEditTask: PropTypes.func,
   newTextEditTask: PropTypes.func,
 }
+
+export default TaskList
