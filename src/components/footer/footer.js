@@ -1,27 +1,33 @@
-import PropTypes from 'prop-types'
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
+import { func, number, string } from 'prop-types'
+
+import './footer.css'
+
 import TasksFilter from '../tasks-filter'
 
-import './index.css'
-
-const Footer = ({ doneCount, onChangeFilter, onClearCompleted, currentFilter }) => {
+const Footer = ({ done, clearCompleted, statusFilter, changeStatusFilter }) => {
   return (
     <footer className="footer">
-      <span className="todo-count">{doneCount} items left</span>
-      <TasksFilter onChangeFilter={onChangeFilter} currentFilter={currentFilter} />
-      <button className="clear-completed" onClick={onClearCompleted}>
+      <span className="todo-count">{done} items left</span>
+      <TasksFilter statusFilter={statusFilter} changeStatusFilter={changeStatusFilter} />
+      <button className="clear-completed" onClick={clearCompleted}>
         Clear completed
       </button>
     </footer>
   )
 }
 
+Footer.defaultProps = {
+  done: 0,
+  statusFilter: 'All',
+}
+
 Footer.propTypes = {
-  doneCount: PropTypes.number.isRequired,
-  onClearCompleted: PropTypes.func.isRequired,
-  onChangeFilter: PropTypes.func.isRequired,
-  currentFilter: PropTypes.string,
+  done: number,
+  clearCompleted: func.isRequired,
+  statusFilter: string,
+  changeStatusFilter: func.isRequired,
 }
 
 export default Footer

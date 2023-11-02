@@ -1,33 +1,35 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
-import './index.css'
-import PropTypes from 'prop-types'
+import { func, string } from 'prop-types'
 
-export default class TasksFilter extends React.Component {
-  filterId = 100
+import './tasks-filter.css'
+let filterId = 100
+const TasksFilter = ({ statusFilter, changeStatusFilter }) => {
+  const filters = ['All', 'Active', 'Completed']
 
-  render() {
-    const { currentFilter, onChangeFilter } = this.props
-    const filters = ['All', 'Active', 'Completed']
+  const buttons = filters.map((item) => (
+    <li key={filterId++}>
+      <button
+        type="button"
+        className={statusFilter === item ? 'selected' : ''}
+        onClick={() => {
+          changeStatusFilter(item)
+        }}
+      >
+        {item}
+      </button>
+    </li>
+  ))
+  return <ul className="filters">{buttons}</ul>
+}
 
-    const buttons = filters.map((item) => (
-      <li key={this.filterId++}>
-        <button
-          type="button"
-          className={currentFilter === item ? 'selected' : ''}
-          onClick={() => {
-            onChangeFilter(item)
-          }}
-        >
-          {item}
-        </button>
-      </li>
-    ))
-
-    return <ul className="filters">{buttons}</ul>
-  }
+TasksFilter.defaultProps = {
+  statusFilter: 'All',
 }
 
 TasksFilter.propTypes = {
-  currentFilter: PropTypes.string.isRequired,
-  onChangeFilter: PropTypes.func,
+  statusFilter: string,
+  changeStatusFilter: func.isRequired,
 }
+
+export default TasksFilter

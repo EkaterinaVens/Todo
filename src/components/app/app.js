@@ -1,147 +1,127 @@
-import React from 'react'
+// eslint-disable-next-line no-unused-vars
+import React, { useState } from 'react'
+import uuid from 'react-uuid'
 
 import NewTaskForm from '../new-task-form'
 import TaskList from '../task-list'
 import Footer from '../footer'
+import './app.css'
 
-export default class App extends React.Component {
-  maxId = 10
+const App = () => {
+  const [todoData, setTodoData] = useState([])
+  const [statusFilter, setStatusFilter] = useState('All')
 
-  state = {
-    tasks: [],
-    filter: 'active',
-  }
+  function createTask(label, min, sec) {
+    const minNum = Number(min)
+    const secNum = Number(sec)
+    const time = minNum * 60 + secNum
 
-  handleCreateTask = (name) => {
-    this.setState(({ tasks }) => ({
-      tasks: [
-        ...tasks,
-        {
-          name,
-          id: this.maxId++,
-          done: false,
-          isEdit: false,
-          date: new Date(),
-        },
-      ],
-    }))
-  }
-
-  deleteItem = (id) => {
-    this.setState(({ tasks }) => {
-      const newArray = tasks.filter((task) => task.id !== id)
-      return {
-        tasks: newArray,
-      }
-    })
-  }
-
-  onToggleDone = (id) => {
-    this.setState(({ tasks }) => {
-      const newArray = tasks.map((task) => {
-        if (task.id === id) {
-          return {
-            ...task,
-            done: !task.done,
-          }
-        }
-        return task
-      })
-      return {
-        tasks: newArray,
-      }
-    })
-  }
-
-  getTasks = () => {
-    const { tasks } = this.state
-    const { filter } = this.state
-
-    if (filter === 'Active') {
-      return tasks.filter((el) => !el.done)
+    return {
+      id: uuid(),
+      label,
+      completed: false,
+      edited: false,
+      date: new Date(),
+      min: minNum,
+      sec: secNum,
+      time,
     }
-    if (filter === 'Completed') {
-      return tasks.filter((el) => el.done)
-    }
-    return tasks
   }
 
-  onChangeFilter = (text) => {
-    // eslint-disable-next-line no-unused-vars
-    this.setState(() => ({
-      filter: text,
-    }))
+  const findIdxTask = (id) => {
+    return todoData.findIndex((el) => el.id === id)
   }
 
-  onClearCompleted = () => {
-    this.setState(({ tasks }) => {
-      const completedTasks = tasks.filter((el) => !el.done)
+  const togglePropperty = (arr, id, prop) => {
+    const idx = findIdxTask(id)
 
-      return {
-        tasks: completedTasks,
-      }
+    const oldItem = arr[idx]
+    const newItem = { ...oldItem, [prop]: !oldItem[prop] }
+
+    return arr.toSpliced(idx, 1, newItem)
+  }
+
+  const addTask = (text, min, sec) => {
+    setTodoData((todoData) => [...todoData, createTask(text, min, sec)])
+  }
+
+  const onToggleEdit = (id) => {
+    setTodoData((todoData) => togglePropperty(todoData, id, 'edited'))
+  }
+
+  const fillEditTask = (label, id) => {
+    setTodoData((todoData) => {
+      const idx = findIdxTask(id)
+      const oldItem = todoData[idx]
+      const newItem = { ...oldItem, label }
+
+      const newTodoData = todoData.toSpliced(idx, 1, newItem)
+
+      return newTodoData
     })
   }
 
-  onEditTask = (id) => {
-    this.setState(({ tasks }) => {
-      const newArray = tasks.map((task) => {
-        if (task.id === id) {
-          return {
-            ...task,
-            isEdit: !task.isEdit,
-          }
-        }
-        return task
+  const deleteTask = (id) => {
+    setTodoData((todoData) => {
+      const idx = findIdxTask(id)
+      const newTodoData = todoData.toSpliced(idx, 1)
+
+      return newTodoData
+    })
+  }
+
+  const onToggleCompleted = (id) => {
+    setTodoData((todoData) => togglePropperty(todoData, id, 'completed'))
+  }
+
+  const clearCompleted = () => {
+    setTodoData((todoData) => todoData.filter((el) => !el.completed))
+  }
+
+  const changeStatusFilter = (status) => {
+    setStatusFilter(status)
+  }
+
+  const filterTask = (arr, status) => {
+    if (status !== 'All') {
+      const newArr = arr.filter((el) => {
+        if (status === 'Active') return !el.completed // Active
+        return el.completed // Completed
       })
 
-      return {
-        tasks: newArray,
-      }
-    })
+      return newArr
+    }
+    return arr // All
   }
 
-  newTextEditTask = (id, e) => {
-    this.setState(({ tasks }) => {
-      const idx = tasks.findIndex((el) => el.id === id)
+  const completedCount = todoData.filter((el) => el.completed).length
+  const activeCount = todoData.length - completedCount
 
-      const oldItem = tasks[idx]
+  const renderTodoData = filterTask(todoData, statusFilter)
 
-      const newItem = { ...oldItem, name: e, isEdit: false }
-
-      const newArray = [...tasks.slice(0, idx), newItem, ...tasks.slice(idx + 1)]
-
-      return {
-        tasks: newArray,
-      }
-    })
-  }
-
-  render() {
-    const doneCount = this.state.tasks.filter((el) => !el.done).length
-
-    return (
-      <section className="todoapp">
-        <header className="header">
-          <h1>todos</h1>
-          <NewTaskForm onCreateTask={this.handleCreateTask} />
-        </header>
-        <section className="main">
-          <TaskList
-            tasks={this.getTasks()}
-            onDeleted={this.deleteItem}
-            onToggleDone={this.onToggleDone}
-            onEditTask={this.onEditTask}
-            newTextEditTask={this.newTextEditTask}
-          />
-          <Footer
-            doneCount={doneCount}
-            onChangeFilter={this.onChangeFilter}
-            onClearCompleted={this.onClearCompleted}
-            currentFilter={this.state.filter}
-          />
-        </section>
+  return (
+    <section className="todoapp">
+      <header className="header">
+        <h1>todos</h1>
+        <NewTaskForm onTaskAdded={addTask} />
+      </header>
+      <section className="main">
+        <TaskList
+          todos={renderTodoData}
+          onToggleCompleted={onToggleCompleted}
+          onToggleEdit={onToggleEdit}
+          fillEditTask={fillEditTask}
+          onDeleted={deleteTask}
+        />
+        <Footer
+          done={activeCount}
+          clearCompleted={clearCompleted}
+          statusFilter={statusFilter}
+          changeStatusFilter={changeStatusFilter}
+        />
       </section>
-    )
-  }
+    </section>
+  )
 }
+
+export default App

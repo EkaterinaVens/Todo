@@ -1,32 +1,67 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
-import PropTypes from 'prop-types'
+import { array, func } from 'prop-types'
+import classNames from 'classnames'
+
+import './task-list.css'
+
 import Task from '../task'
 
-const TaskList = ({ tasks, onDeleted, onToggleDone, onEditTask, newTextEditTask }) => {
-  return (
-    <ul className="todo-list">
-      {tasks.map((task) => (
+const TaskList = ({ todos, onDeleted, onToggleEdit, fillEditTask, onToggleCompleted }) => {
+  const onTaskChange = (e, id) => {
+    const label = e.target.value
+    fillEditTask(label, id)
+  }
+
+  const onKeyDown = (e, id) => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      onToggleEdit(id)
+    }
+  }
+
+  const elements = todos.map((item) => {
+    const { id, label, completed, edited } = item
+
+    let taskClass = classNames({ completed: completed, editing: edited })
+
+    return (
+      <li key={id} className={taskClass}>
         <Task
-          key={task.id}
-          {...task}
-          onDeleted={() => onDeleted(task.id)}
-          onToggleDone={() => onToggleDone(task.id)}
-          onEditTask={() => onEditTask(task.id)}
-          newTextEditTask={(newTaskName) => {
-            newTextEditTask(task.id, newTaskName)
-          }}
+          onToggleCompleted={() => onToggleCompleted(id)}
+          onToggleEdit={() => onToggleEdit(id)}
+          onDeleted={() => onDeleted(id)}
+          {...item}
         />
-      ))}
-    </ul>
-  )
+        {edited && (
+          <input
+            className="edit"
+            type="text"
+            value={label}
+            onChange={(e) => {
+              onTaskChange(e, id)
+            }}
+            onKeyDown={(e) => {
+              onKeyDown(e, id)
+            }}
+          />
+        )}
+      </li>
+    )
+  })
+
+  return <ul className="todo-list">{elements}</ul>
 }
+
+TaskList.defaultProps = {
+  todos: [],
+}
+
 TaskList.propTypes = {
-  tasks: PropTypes.array,
-  onDeleted: PropTypes.func,
-  onToggleDone: PropTypes.func,
-  onEditTask: PropTypes.func,
-  newTextEditTask: PropTypes.func,
+  todos: array,
+  onDeleted: func.isRequired,
+  onToggleEdit: func.isRequired,
+  fillEditTask: func.isRequired,
+  onToggleCompleted: func.isRequired,
 }
 
 export default TaskList
