@@ -15,7 +15,7 @@ const Task = ({ id, label, date, time, onToggleCompleted, onToggleEdit, onDelete
     }, 1000)
 
     if (timeLeft === 0) setIsCounting(false)
-
+    if (completed) setIsCounting(false)
     return () => {
       clearInterval(interval)
     }

@@ -6,19 +6,18 @@ import './new-task-form.css'
 
 const NewTaskForm = ({ onTaskAdded }) => {
   const [label, setLabel] = useState('')
-  const [min, setMin] = useState('')
-  const [sec, setSec] = useState('')
+  const [time, setTime] = useState({ min: '', sec: '' })
 
   const onLableChange = (e) => {
     setLabel(e.target.value)
   }
 
   const onMinutesChange = (e) => {
-    setMin(e.target.value)
+    setTime({ ...time, min: e.target.value })
   }
 
   const onSecondsChange = (e) => {
-    setSec(e.target.value)
+    setTime({ ...time, sec: e.target.value })
   }
 
   const onSubmit = (e) => {
@@ -33,20 +32,19 @@ const NewTaskForm = ({ onTaskAdded }) => {
     }
 
     if (min < 0) {
-      setMin('')
+      setTime({ ...time, min: '' })
       return
     }
 
     if (sec < 0) {
-      setSec('')
+      setTime({ ...time, sec: '' })
       return
     }
 
     onTaskAdded(text, min, sec)
 
     setLabel('')
-    setMin('')
-    setSec('')
+    setTime({ min: '', sec: '' })
   }
 
   return (
@@ -65,7 +63,7 @@ const NewTaskForm = ({ onTaskAdded }) => {
         placeholder="Min"
         onChange={onMinutesChange}
         type="number"
-        value={min}
+        value={time.min}
         required
       ></input>
       <input
@@ -73,7 +71,8 @@ const NewTaskForm = ({ onTaskAdded }) => {
         placeholder="Sec"
         onChange={onSecondsChange}
         type="number"
-        value={sec}
+        value={time.sec}
+        max={59}
         required
       ></input>
       <button className="visually-hidden" type="submit"></button>

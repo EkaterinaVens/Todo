@@ -28,17 +28,17 @@ const App = () => {
     }
   }
 
-  const findIdxTask = (id) => {
-    return todoData.findIndex((el) => el.id === id)
-  }
-
   const togglePropperty = (arr, id, prop) => {
-    const idx = findIdxTask(id)
-
-    const oldItem = arr[idx]
-    const newItem = { ...oldItem, [prop]: !oldItem[prop] }
-
-    return arr.toSpliced(idx, 1, newItem)
+    const newArr = arr.map((task) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          [prop]: !task[prop],
+        }
+      }
+      return task
+    })
+    return newArr
   }
 
   const addTask = (text, min, sec) => {
@@ -51,22 +51,22 @@ const App = () => {
 
   const fillEditTask = (label, id) => {
     setTodoData((todoData) => {
-      const idx = findIdxTask(id)
-      const oldItem = todoData[idx]
-      const newItem = { ...oldItem, label }
-
-      const newTodoData = todoData.toSpliced(idx, 1, newItem)
-
-      return newTodoData
+      const newArr = todoData.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            label,
+          }
+        }
+        return task
+      })
+      return newArr
     })
   }
 
   const deleteTask = (id) => {
     setTodoData((todoData) => {
-      const idx = findIdxTask(id)
-      const newTodoData = todoData.toSpliced(idx, 1)
-
-      return newTodoData
+      return todoData.filter((task) => task.id !== id)
     })
   }
 
@@ -96,7 +96,6 @@ const App = () => {
 
   const completedCount = todoData.filter((el) => el.completed).length
   const activeCount = todoData.length - completedCount
-
   const renderTodoData = filterTask(todoData, statusFilter)
 
   return (
