@@ -3,11 +3,12 @@ import React from 'react'
 import { func, string } from 'prop-types'
 
 import './tasks-filter.css'
+
+const FILTERS = ['All', 'Active', 'Completed']
+
 let filterId = 100
 const TasksFilter = ({ statusFilter, changeStatusFilter }) => {
-  const filters = ['All', 'Active', 'Completed']
-
-  const buttons = filters.map((item) => (
+  const buttons = FILTERS.map((item) => (
     <li key={filterId++}>
       <button
         type="button"
