@@ -1,7 +1,5 @@
-// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { func, string } from 'prop-types'
-
 import './tasksFilter.css'
 
 const FILTERS = ['All', 'Active', 'Completed']

@@ -1,9 +1,6 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
 import { bool, func, instanceOf, number, string } from 'prop-types'
 import { formatDistanceToNow } from 'date-fns'
-
-// import './task.css'
 
 const Task = ({ id, label, date, time, onToggleCompleted, onToggleEdit, onDeleted, completed }) => {
   const [timeLeft, setTimeLeft] = useState(time)
@@ -19,7 +16,7 @@ const Task = ({ id, label, date, time, onToggleCompleted, onToggleEdit, onDelete
     return () => {
       clearInterval(interval)
     }
-  }, [timeLeft, isCounting])
+  }, [timeLeft, isCounting, completed])
 
   const timerStart = () => {
     if (timeLeft === 0) setTimeLeft(time)
