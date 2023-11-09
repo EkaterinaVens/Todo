@@ -1,12 +1,33 @@
 import React, { useState } from 'react'
 import { func } from 'prop-types'
+import uuid from 'react-uuid'
 
 import './newTaskForm.css'
 
-const NewTaskForm = ({ onTaskAdded }) => {
+function createTask(label, min, sec) {
+  const minNum = Number(min)
+  const secNum = Number(sec)
+  const time = minNum * 60 + secNum
+
+  return {
+    id: uuid(),
+    label,
+    completed: false,
+    edited: false,
+    date: new Date(),
+    min: minNum,
+    sec: secNum,
+    time,
+  }
+}
+
+const NewTaskForm = ({ setTasks }) => {
   const [label, setLabel] = useState('')
   const [time, setTime] = useState({ min: '', sec: '' })
 
+  const onTaskAdded = (text, min, sec) => {
+    setTasks((tasks) => [...tasks, createTask(text, min, sec)])
+  }
   const onLableChange = (e) => {
     setLabel(e.target.value)
   }
@@ -80,7 +101,7 @@ const NewTaskForm = ({ onTaskAdded }) => {
 }
 
 NewTaskForm.propTypes = {
-  onTaskAdded: func.isRequired,
+  setTasks: func.isRequired,
 }
 
 export default NewTaskForm

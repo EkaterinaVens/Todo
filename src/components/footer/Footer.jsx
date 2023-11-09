@@ -3,7 +3,10 @@ import { func, number, string } from 'prop-types'
 import TasksFilter from '../tasksFilter'
 import './footer.css'
 
-const Footer = ({ done, clearCompleted, statusFilter, changeStatusFilter }) => {
+const Footer = ({ done, statusFilter, changeStatusFilter, setTasks }) => {
+  const clearCompleted = () => {
+    setTasks((tasks) => tasks.filter((el) => !el.completed))
+  }
   return (
     <footer className="footer">
       <span className="todo-count">{done} items left</span>
@@ -22,9 +25,9 @@ Footer.defaultProps = {
 
 Footer.propTypes = {
   done: number,
-  clearCompleted: func.isRequired,
   statusFilter: string,
   changeStatusFilter: func.isRequired,
+  setTasks: func.isRequired,
 }
 
 export default Footer

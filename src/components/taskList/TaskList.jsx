@@ -4,7 +4,45 @@ import classNames from 'classnames'
 import Task from '../task/Task'
 import './taskList.css'
 
-const TaskList = ({ todos, onDeleted, onToggleEdit, fillEditTask, onToggleCompleted }) => {
+const TaskList = ({ todos, setTasks }) => {
+  const togglePropperty = (arr, id, prop) => {
+    const newArr = arr.map((task) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          [prop]: !task[prop],
+        }
+      }
+      return task
+    })
+    return newArr
+  }
+  const onToggleEdit = (id) => {
+    setTasks((tasks) => togglePropperty(tasks, id, 'edited'))
+  }
+  const fillEditTask = (label, id) => {
+    setTasks((tasks) => {
+      const newArr = tasks.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            label,
+          }
+        }
+        return task
+      })
+      return newArr
+    })
+  }
+  const deleteTask = (id) => {
+    setTasks((tasks) => {
+      return tasks.filter((task) => task.id !== id)
+    })
+  }
+  const onToggleCompleted = (id) => {
+    setTasks((tasks) => togglePropperty(tasks, id, 'completed'))
+  }
+
   const onTaskChange = (e, id) => {
     const label = e.target.value
     fillEditTask(label, id)
@@ -26,7 +64,7 @@ const TaskList = ({ todos, onDeleted, onToggleEdit, fillEditTask, onToggleComple
         <Task
           onToggleCompleted={() => onToggleCompleted(id)}
           onToggleEdit={() => onToggleEdit(id)}
-          onDeleted={() => onDeleted(id)}
+          onDeleted={() => deleteTask(id)}
           {...item}
         />
         {edited && (
@@ -55,10 +93,7 @@ TaskList.defaultProps = {
 
 TaskList.propTypes = {
   todos: array,
-  onDeleted: func.isRequired,
-  onToggleEdit: func.isRequired,
-  fillEditTask: func.isRequired,
-  onToggleCompleted: func.isRequired,
+  setTasks: func.isRequired,
 }
 
 export default TaskList
