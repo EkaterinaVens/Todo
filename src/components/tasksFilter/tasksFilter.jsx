@@ -2,7 +2,7 @@
 import React from 'react'
 import { func, string } from 'prop-types'
 
-import './tasks-filter.css'
+import './tasksFilter.css'
 
 const FILTERS = ['All', 'Active', 'Completed']
 

@@ -2,8 +2,8 @@
 import React, { useState } from 'react'
 import uuid from 'react-uuid'
 
-import NewTaskForm from '../new-task-form'
-import TaskList from '../task-list'
+import NewTaskForm from '../newTaskForm'
+import TaskList from '../taskList'
 import Footer from '../footer'
 import './app.css'
 
@@ -89,10 +89,6 @@ const App = () => {
   const clearCompleted = () => {
     setTasks((tasks) => tasks.filter((el) => !el.completed))
   }
-
-  // const changeStatusFilter = (status) => {
-  //   setStatusFilter(status)
-  // }
 
   const completedCount = tasks.filter((el) => el.completed).length
   const activeCount = tasks.length - completedCount

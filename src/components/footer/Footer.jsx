@@ -1,10 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { func, number, string } from 'prop-types'
-
+import TasksFilter from '../tasksFilter'
 import './footer.css'
-
-import TasksFilter from '../tasks-filter'
 
 const Footer = ({ done, clearCompleted, statusFilter, changeStatusFilter }) => {
   return (

@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { func } from 'prop-types'
 
-import './new-task-form.css'
+import './newTaskForm.css'
 
 const NewTaskForm = ({ onTaskAdded }) => {
   const [label, setLabel] = useState('')

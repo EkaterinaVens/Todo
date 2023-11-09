@@ -2,8 +2,8 @@
 import React from 'react'
 import { array, func } from 'prop-types'
 import classNames from 'classnames'
-import Task from '../task'
-import './task-list.css'
+import Task from '../task/Task'
+import './taskList.css'
 
 const TaskList = ({ todos, onDeleted, onToggleEdit, fillEditTask, onToggleCompleted }) => {
   const onTaskChange = (e, id) => {
